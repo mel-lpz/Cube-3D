@@ -1,86 +1,78 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>YSL — EDEN 2049</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>YSL — EDEN 2049</title>
 
-        <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
-    </head>
+    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+  </head>
 
-    <body>
-        <a-scene fog="type: linear; color: #D97C0B; near: 1; far: 5">
+  <body>
+    <a-scene fog="type: linear; color: #D97C0B; near: 4; far: 10">
+      <a-sky color="#0077b6"></a-sky>
+      
 
-            <a-sky color="#0077b6"></a-sky>
-            <!-- SOL -->
-      <a-plane
+      <!-- ASSETS -->
+      <a-assets>
+        <img id="floorTex" src="textures/concrete_floor.jpg" />
+        <img id="wallTex" src="textures/white_wall.jpg" />
+        <img id="ceilingTex" src="textures/white_wall.jpg" />
+        <a-asset-item id="terminal" src="assets/master_control.glb"></a-asset-item>
+      </a-assets>
+
+      <!-- SOL -->
+      <a-cylinder
         position="0 0 0"
+        radius="7"
+        height="0.1"
+        material="src: #floorTex; repeat: 6 6; roughness: 0.9"
+      >
+      </a-cylinder>
+
+      
+      <!-- ANNEAU LUMINEUX -->
+      <a-ring
+        position="0 0.11 0"
         rotation="-90 0 0"
-        width="4"
-        height="4"
-        color="#e5e5e5">
-      </a-plane>
+        radius-inner="6.6"
+        radius-outer="6.7"
+        material="color: #ffffff; emissive: #ffffff; emissiveIntensity: 3"
+      >
+      </a-ring>
+
+      <!-- MURS CIRCULAIRES -->
+      <a-cylinder
+        position="0 3 0"
+        radius="7"
+        height="6"
+        open-ended="true"
+        material="src: #wallTex; repeat: 8 2; roughness: 1"
+      >
+      </a-cylinder>
 
       <!-- PLAFOND -->
-      <a-plane
-        position="0 4 0"
-        rotation="90 0 0"
-        width="4"
-        height="4"
-        color="#e5e5e5">
-      </a-plane>
+      <a-cylinder
+        position="0 6 0"
+        radius="7"
+        height="0.1"
+        material="src: #ceilingTex; repeat: 4 4; roughness: 1"
+      >
+      </a-cylinder>
 
-      <!-- FOND -->
-      <a-plane
-        position="0 2 -2"
-        rotation="0 0 0"
-        width="4"
-        height="4"
-        color="#f0f0f0">
-      </a-plane>
+      <!-- TERMINAL CENTRAL -->
+      
+      <a-entity gltf-model="#terminal" position="0 0 0" scale="0.2 0.2 0.2"></a-entity>
 
-      <!-- FACE -->
-      <a-plane
-        position="0 2 2"
-        rotation="0 180 0"
-        width="4"
-        height="4"
-        color="#f0f0f0">
-      </a-plane>
-
-      <!-- GAUCHE -->
-      <a-plane
-        position="-2 2 0"
-        rotation="0 90 0"
-        width="4"
-        height="4"
-        color="#f5f5f5">
-      </a-plane>
-
-      <!-- DROIT -->
-      <a-plane
-        position="2 2 0"
-        rotation="0 -90 0"
-        width="4"
-        height="4"
-        color="#f5f5f5">
-      </a-plane>
-
-      <a-box
-        position="0 0.45 0"
-        width="0.5"
-        height="1.5"
-        depth="0.5"
-        color="#dcdcdc">
-      </a-box>
 
       <!-- CAMÉRA -->
       <a-camera
-        position="0 1.6 0"
+        position="0 1.6 3"
         fov="60"
         wasd-controls-enabled="true"
-        look-controls-enabled="true">
-        </a-camera>
-        </a-scene>
-    </body>
+        look-controls-enabled="true"
+      >
+      </a-camera>
+    </a-scene>
+  </body>
 </html>
