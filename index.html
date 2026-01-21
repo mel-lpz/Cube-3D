@@ -6,6 +6,7 @@
     <title>YSL — EDEN 2049</title>
 
     <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+    <script src="main.js"></script>
   </head>
 
   <body>
@@ -157,18 +158,20 @@
       </a-cylinder>
 
       <!-- TERMINAL CENTRAL -->
-      <a-entity id="terminalTrigger" class="clickable" terminal-interaction>
+      <a-entity id="terminalTrigger">
         <a-entity
           gltf-model="#terminal"
           position="0 0 0"
           scale="0.2 0.2 0.2"
         ></a-entity>
-        <!-- Zone de clic visible pour debug -->
+        <!-- Zone de clic (hitbox) -->
         <a-cylinder
+          class="clickable"
+          terminal-interaction
           position="0 0.5 0"
           radius="0.5"
           height="1"
-          material="color: #ff0000; opacity: 0.3; transparent: true"
+          material="opacity: 0; transparent: true"
         ></a-cylinder>
       </a-entity>
 
@@ -212,7 +215,5 @@
         ></a-entity>
       </a-entity>
     </a-scene>
-
-    <script src="main.js"></script>
   </body>
 </html>
