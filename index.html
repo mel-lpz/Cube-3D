@@ -156,22 +156,6 @@
       >
       </a-cylinder>
 
-      <!-- Lasers -->
-
-      <a-entity id="rig" position="0 0 0">
-        <a-entity camera look-controls position="0 1.6 0"></a-entity>
-        <a-entity
-          laser-controls="hand: left"
-          raycaster="objects: .clickable; far: 20; showLine: true"
-          position="-0.5 1.5 -0.5"
-        ></a-entity>
-        <a-entity
-          laser-controls="hand: right"
-          raycaster="objects: .clickable; far: 20; showLine: true"
-          position="0.5 1.5 -0.5"
-        ></a-entity>
-      </a-entity>
-
       <!-- TERMINAL CENTRAL -->
       <a-entity id="terminalTrigger" class="solid clickable">
         <a-entity
@@ -179,13 +163,12 @@
           position="0 0 0"
           scale="0.2 0.2 0.2"
         ></a-entity>
-    
+        <!-- Zone de clic visible pour debug -->
         <a-cylinder
           position="0 0.5 0"
           radius="0.5"
           height="1"
-          material="opacity: 0; transparent: true"
-          visible="false"
+          material="color: #ff0000; opacity: 0.3; transparent: true"
         ></a-cylinder>
       </a-entity>
 
@@ -194,45 +177,39 @@
         gltf-model="#grass"
         position="0 0 0"
         scale="0 0 0">
-    </a-entity>
+      </a-entity>
 
-       <a-camera
-        position="0 1.6 3"
-        fov="60"
-        wasd-controls="acceleration: 20"
-        look-controls
-        aabb-collider="objects: .solid"
-        cursor="rayOrigin: mouse"
-      >
-        <a-cursor
-          animation__click="property: scale; startEvents: click; from: 0.1 0.1 0.1; to: 1 1 1; dur: 150; dir: alternate"
-          color="#ffffff"
-          opacity="0.8"
-          raycaster="objects: .clickable"
-        ></a-cursor>
-      </a-camera>
+      <!-- CAMERA AVEC CONTROLES VR ET DESKTOP -->
+      <a-entity id="rig" position="0 1.6 3">
+        <a-camera
+          fov="60"
+          wasd-controls="acceleration: 20"
+          look-controls
+          aabb-collider="objects: .solid"
+        >
+          <!-- CURSOR DESKTOP -->
+          <a-cursor
+            animation__click="property: scale; startEvents: click; from: 0.1 0.1 0.1; to: 1 1 1; dur: 150; dir: alternate"
+            color="#ffffff"
+            opacity="0.8"
+            raycaster="objects: .clickable"
+          ></a-cursor>
+        </a-camera>
+        
+        <!-- CONTROLES VR MAIN GAUCHE -->
+        <a-entity
+          laser-controls="hand: left"
+          raycaster="objects: .clickable; far: 20; lineColor: red; lineOpacity: 0.8"
+        ></a-entity>
+        
+        <!-- CONTROLES VR MAIN DROITE -->
+        <a-entity
+          laser-controls="hand: right"
+          raycaster="objects: .clickable; far: 20; lineColor: red; lineOpacity: 0.8"
+        ></a-entity>
+      </a-entity>
     </a-scene>
 
-                <script>
-            document.addEventListener('DOMContentLoaded', () => {
-                console.log('Script chargé');
-                
-                const terminal = document.querySelector('#terminalTrigger');
-                const grass = document.querySelector('#grass');
-                
-                console.log('Terminal trouvé:', terminal);
-                console.log('Grass trouvé:', grass);
-
-                if (terminal && grass) {
-                    terminal.addEventListener('click', () => {
-                        console.log('Clic détecté sur le terminal!');
-                        grass.setAttribute('scale', '1 1 1');
-                        console.log('Grass scale changé à 1 1 1');
-                    });
-                } else {
-                    console.error('Éléments non trouvés');
-                }
-            });
-        </script>
+    <script src="main.js"></script>
   </body>
 </html>
