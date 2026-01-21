@@ -199,14 +199,16 @@
         
         <!-- CONTROLES VR MAIN GAUCHE -->
         <a-entity
+          hand-controls="hand: left; handModelStyle: lowPoly; color: #ffffff"
           laser-controls="hand: left"
-          raycaster="objects: .clickable; far: 20; lineColor: white; lineOpacity: 0.8"
+          raycaster="objects: .clickable; far: 20; lineColor: red; lineOpacity: 0.8"
         ></a-entity>
         
         <!-- CONTROLES VR MAIN DROITE -->
         <a-entity
+          hand-controls="hand: right; handModelStyle: lowPoly; color: #ffffff"
           laser-controls="hand: right"
-          raycaster="objects: .clickable; far: 20; lineColor: white; lineOpacity: 0.8"
+          raycaster="objects: .clickable; far: 20; lineColor: red; lineOpacity: 0.8"
         ></a-entity>
       </a-entity>
     </a-scene>
