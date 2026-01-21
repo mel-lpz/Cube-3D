@@ -180,9 +180,9 @@
       </a-entity>
 
       <!-- CAMERA AVEC CONTROLES VR ET DESKTOP -->
-      <a-entity id="rig" position="0 1.6 3">
+      <a-entity id="rig" position="0 0 0">
         <a-camera
-          position="0 0 0.1"
+          position="0 1.6 3"
           fov="60"
           wasd-controls="acceleration: 20"
           look-controls
@@ -200,13 +200,13 @@
         <!-- CONTROLES VR MAIN GAUCHE -->
         <a-entity
           laser-controls="hand: left"
-          raycaster="objects: .clickable; far: 20; lineColor: red; lineOpacity: 0.8"
+          raycaster="objects: .clickable; far: 20; lineColor: white; lineOpacity: 0.8"
         ></a-entity>
         
         <!-- CONTROLES VR MAIN DROITE -->
         <a-entity
           laser-controls="hand: right"
-          raycaster="objects: .clickable; far: 20; lineColor: red; lineOpacity: 0.8"
+          raycaster="objects: .clickable; far: 20; lineColor: white; lineOpacity: 0.8"
         ></a-entity>
       </a-entity>
     </a-scene>
