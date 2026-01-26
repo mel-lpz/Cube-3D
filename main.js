@@ -2,22 +2,50 @@ AFRAME.registerComponent('terminal-interaction', {
     init: function() {
         console.log('Component terminal-interaction initialisé sur:', this.el);
         
-        // Fonction pour faire apparaître la plante
-        const showGrass = (evt) => {
-            console.log('Interaction détectée!', evt.type);
-            // Chercher l'élément au moment du clic
+        // Fonction pour transformer la scène
+        const transformScene = (evt) => {
+            console.log('Transformation de la scène!', evt.type);
+            
             const grass = document.querySelector('#grass');
-            console.log('Grass element:', grass);
+            const wall = document.querySelector('#wall');
+            const ceiling = document.querySelector('#ceiling');
+            const forest = document.querySelector('#forest');
+            const scene = document.querySelector('#scene');
+            
+            // Faire apparaître la plante centrale
             if (grass) {
                 grass.setAttribute('scale', '1 1 1');
-                console.log('Grass visible! Scale:', grass.getAttribute('scale'));
-            } else {
-                console.error('Grass non trouvé!');
+                console.log('Plante centrale visible!');
+            }
+            
+            // Faire disparaître le mur
+            if (wall) {
+                wall.setAttribute('visible', 'false');
+                console.log('Mur caché!');
+            }
+            
+            // Faire disparaître le plafond
+            if (ceiling) {
+                ceiling.setAttribute('visible', 'false');
+                console.log('Plafond caché!');
+            }
+            
+            // Faire apparaître la forêt
+            if (forest) {
+                forest.setAttribute('visible', 'true');
+                console.log('Forêt visible!');
+            }
+            
+            // Changer le ciel en bleu et ajuster le fog
+            if (scene) {
+                scene.setAttribute('background', 'color: #87CEEB');
+                scene.setAttribute('fog', 'type: linear; color: #87CEEB; near: 15; far: 50');
+                console.log('Ciel bleu!');
             }
         };
         
         // Desktop: clic avec la souris via le cursor
-        this.el.addEventListener('click', showGrass);
+        this.el.addEventListener('click', transformScene);
         
         // VR: événements des contrôleurs
         this.el.addEventListener('mouseenter', () => {
