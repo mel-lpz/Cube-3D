@@ -13,11 +13,13 @@
     <a-scene id="scene" fog="type: linear; color: #111; near: 6; far: 14" background="color: #111">
       <a-light type="ambient" color="#ffffff" intensity="0.05"> </a-light>
 
+
       <!-- ASSETS -->
       <a-assets>
         <img id="floorTex" src="textures/concrete_floor.jpg" />
         <img id="wallTex" src="textures/white_wall.jpg" />
         <img id="ceilingTex" src="textures/white_wall.jpg" />
+        <img id="foret360" src="assets/forest.jpg" />
         
         <a-asset-item
           id="terminal"
@@ -43,6 +45,8 @@
         material="src: #floorTex; repeat: 6 6; roughness: 0.9"
       >
       </a-cylinder>
+
+      <a-sky src="#foret360" rotation="0 -90 0"></a-sky>
 
       <!-- ANNEAU LUMINEUX -->
       <a-ring
@@ -163,6 +167,7 @@
             roughness: 1;"
       >
       </a-cylinder>
+
 
       <!-- TERMINAL CENTRAL -->
       <a-entity id="terminalTrigger">
@@ -288,7 +293,7 @@
       <!-- CAMERA AVEC CONTROLES VR ET DESKTOP -->
       <a-entity id="rig" position="0 0 0">
         <a-camera
-          position="0 1.6 3"
+          position="0 1.6 6"
           fov="60"
           wasd-controls="acceleration: 20"
           look-controls
