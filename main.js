@@ -2,14 +2,15 @@ AFRAME.registerComponent('terminal-interaction', {
     init: function() {
         console.log('Component terminal-interaction initialisé sur:', this.el);
         
-        const grass = document.querySelector('#grass');
-        
         // Fonction pour faire apparaître la plante
         const showGrass = (evt) => {
             console.log('Interaction détectée!', evt.type);
+            // Chercher l'élément au moment du clic
+            const grass = document.querySelector('#grass');
+            console.log('Grass element:', grass);
             if (grass) {
                 grass.setAttribute('scale', '1 1 1');
-                console.log('Grass visible!');
+                console.log('Grass visible! Scale:', grass.getAttribute('scale'));
             } else {
                 console.error('Grass non trouvé!');
             }
