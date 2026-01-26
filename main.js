@@ -11,6 +11,7 @@ AFRAME.registerComponent('terminal-interaction', {
             const ceiling = document.querySelector('#ceiling');
             const forest = document.querySelector('#forest');
             const scene = document.querySelector('#scene');
+            const ambientLight = document.querySelector('#ambientLight');
             
             // Faire apparaître la plante centrale
             if (grass) {
@@ -41,6 +42,12 @@ AFRAME.registerComponent('terminal-interaction', {
                 scene.setAttribute('background', 'color: #87CEEB');
                 scene.setAttribute('fog', 'type: linear; color: #87CEEB; near: 15; far: 50');
                 console.log('Ciel bleu!');
+            }
+            
+            // Augmenter la luminosité ambiante
+            if (ambientLight) {
+                ambientLight.setAttribute('intensity', '0.8');
+                console.log('Luminosité augmentée!');
             }
         };
         
