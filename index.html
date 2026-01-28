@@ -20,6 +20,7 @@
         <img id="wallTex" src="textures/white_wall.jpg" />
         <img id="ceilingTex" src="textures/white_wall.jpg" />
         <img id="foret360" src="assets/forest.jpg" />
+        <img id="forestBg" src="textures/bg_forest.jpg" />
         
         <a-asset-item
           id="terminal"
@@ -154,6 +155,23 @@
             roughness: 1;
             metalness: 0;
             side: double;"
+      >
+      </a-cylinder>
+
+      <!-- MUR PANORAMIQUE FORÊT (caché au départ) -->
+      <a-cylinder
+        id="forestWall"
+        visible="false"
+        position="0 7 0"
+        radius="20"
+        height="16"
+        open-ended="true"
+        theta-length="360"
+        material="src: #forestBg;
+            repeat: 1 1;
+            side: back;
+            roughness: 1;
+            metalness: 0;"
       >
       </a-cylinder>
 

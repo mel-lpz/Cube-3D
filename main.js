@@ -10,6 +10,7 @@ AFRAME.registerComponent('terminal-interaction', {
             const wall = document.querySelector('#wall');
             const ceiling = document.querySelector('#ceiling');
             const forest = document.querySelector('#forest');
+            const forestWall = document.querySelector('#forestWall');
             const scene = document.querySelector('#scene');
             const ambientLight = document.querySelector('#ambientLight');
             
@@ -35,6 +36,12 @@ AFRAME.registerComponent('terminal-interaction', {
             if (forest) {
                 forest.setAttribute('visible', 'true');
                 console.log('Forêt visible!');
+            }
+            
+            // Faire apparaître le mur panoramique de forêt
+            if (forestWall) {
+                forestWall.setAttribute('visible', 'true');
+                console.log('Mur panoramique forêt visible!');
             }
             
             // Changer le ciel en bleu et ajuster le fog
