@@ -52,13 +52,41 @@ AFRAME.registerComponent('terminal-interaction', {
                         console.log('Hologramme bleu!');
                     }
                     
-                    // Transformer vers la forêt
+                    // Transformer vers la forêt avec onde
                     setTimeout(() => {
                         if (hologram) hologram.setAttribute('visible', 'false');
-                        goToForest();
-                        isInForest = true;
-                        isTransitioning = false;
-                        console.log('Transformation vers forêt complète!');
+                        
+                        // Lancer l'onde bleue
+                        const wave = document.querySelector('#transitionWave');
+                        if (wave) {
+                            // Reset de l'onde
+                            wave.setAttribute('scale', '0.1 0.1 0.1');
+                            wave.setAttribute('material', 'color: #00aaff; opacity: 0.8; transparent: true; side: double; emissive: #00aaff; emissiveIntensity: 2; wireframe: false');
+                            wave.setAttribute('visible', 'true');
+                            
+                            // Animation d'expansion
+                            wave.setAttribute('animation__scale', 'property: scale; from: 0.1 0.1 0.1; to: 50 50 50; dur: 800; easing: easeOutQuad');
+                            wave.setAttribute('animation__opacity', 'property: material.opacity; from: 0.8; to: 0; dur: 800; easing: easeInQuad');
+                            
+                            // Changer la scène au milieu de l'onde (quand elle couvre la vue)
+                            setTimeout(() => {
+                                goToForest();
+                            }, 300);
+                            
+                            // Cacher l'onde après l'animation
+                            setTimeout(() => {
+                                wave.setAttribute('visible', 'false');
+                                wave.removeAttribute('animation__scale');
+                                wave.removeAttribute('animation__opacity');
+                                isInForest = true;
+                                isTransitioning = false;
+                                console.log('Transformation vers forêt complète!');
+                            }, 850);
+                        } else {
+                            goToForest();
+                            isInForest = true;
+                            isTransitioning = false;
+                        }
                     }, 500);
                     
                 }, 2000);
@@ -85,13 +113,41 @@ AFRAME.registerComponent('terminal-interaction', {
                         console.log('Hologramme rouge!');
                     }
                     
-                    // Transformer vers le labo
+                    // Transformer vers le labo avec onde
                     setTimeout(() => {
                         if (hologram) hologram.setAttribute('visible', 'false');
-                        goToLab();
-                        isInForest = false;
-                        isTransitioning = false;
-                        console.log('Transformation vers labo complète!');
+                        
+                        // Lancer l'onde rouge
+                        const wave = document.querySelector('#transitionWave');
+                        if (wave) {
+                            // Reset de l'onde en rouge
+                            wave.setAttribute('scale', '0.1 0.1 0.1');
+                            wave.setAttribute('material', 'color: #ff0000; opacity: 0.8; transparent: true; side: double; emissive: #ff0000; emissiveIntensity: 2; wireframe: false');
+                            wave.setAttribute('visible', 'true');
+                            
+                            // Animation d'expansion
+                            wave.setAttribute('animation__scale', 'property: scale; from: 0.1 0.1 0.1; to: 50 50 50; dur: 800; easing: easeOutQuad');
+                            wave.setAttribute('animation__opacity', 'property: material.opacity; from: 0.8; to: 0; dur: 800; easing: easeInQuad');
+                            
+                            // Changer la scène au milieu de l'onde
+                            setTimeout(() => {
+                                goToLab();
+                            }, 300);
+                            
+                            // Cacher l'onde après l'animation
+                            setTimeout(() => {
+                                wave.setAttribute('visible', 'false');
+                                wave.removeAttribute('animation__scale');
+                                wave.removeAttribute('animation__opacity');
+                                isInForest = false;
+                                isTransitioning = false;
+                                console.log('Transformation vers labo complète!');
+                            }, 850);
+                        } else {
+                            goToLab();
+                            isInForest = false;
+                            isTransitioning = false;
+                        }
                     }, 500);
                     
                 }, 2000);
