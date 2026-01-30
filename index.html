@@ -238,6 +238,10 @@
         <audio id="forestAudio" src="audio/forest.mp3" preload="auto"></audio>
         <audio id="clicAudio" src="audio/clic.mp3" preload="auto"></audio>
         <audio id="woodpeckerAudio" src="audio/woodpecker.mp3" preload="auto"></audio>
+        <audio id="loadingAudio" src="audio/loading.mp3" preload="auto"></audio>
+        
+        <!-- IMAGES -->
+        <img id="yslLogo" src="images/ysl.png" />
         
         <a-asset-item
           id="terminal"
@@ -425,6 +429,11 @@
           id="clicSound"
           sound="src: #clicAudio; autoplay: false; volume: 1.0"
         ></a-entity>
+        <!-- Son de loading -->
+        <a-entity
+          id="loadingSound"
+          sound="src: #loadingAudio; autoplay: false; volume: 4"
+        ></a-entity>
         <!-- HOLOGRAMME (caché au départ) -->
         <a-entity id="hologram" visible="false" position="0 1.6 0">
           <a-plane
@@ -433,6 +442,14 @@
             height="0.8"
             material="color: #ff0000; opacity: 0.4; transparent: true; side: double; emissive: #ff0000; emissiveIntensity: 0.5"
             position="0 0 0"
+          ></a-plane>
+          <!-- Logo YSL -->
+          <a-plane
+            id="holoLogo"
+            width="0.6"
+            height="0.4"
+            material="src: #yslLogo; transparent: true; opacity: 0.9; side: double"
+            position="0 0 0.02"
           ></a-plane>
           <!-- Bordure lumineuse -->
           <a-plane

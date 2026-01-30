@@ -13,9 +13,17 @@ AFRAME.registerComponent('terminal-interaction', {
             
             // 1. Jouer le son de clic
             const clicSound = document.querySelector('#clicSound');
+            const loadingSound = document.querySelector('#loadingSound');
+            
             if (clicSound && clicSound.components.sound) {
                 clicSound.components.sound.playSound();
                 console.log('Son de clic joué!');
+            }
+            
+            // Jouer le son de loading
+            if (loadingSound && loadingSound.components.sound) {
+                loadingSound.components.sound.playSound();
+                console.log('Son de loading joué!');
             }
             
             // 2. Afficher l'hologramme rouge
