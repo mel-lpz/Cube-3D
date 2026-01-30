@@ -7,9 +7,220 @@
 
     <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
     <script src="main.js"></script>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500&display=swap');
+      
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      #titleScreen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: linear-gradient(180deg, #080808 0%, #0d0d0d 40%, #111111 70%, #0a0a0a 100%);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        cursor: pointer;
+        font-family: 'Orbitron', sans-serif;
+        transition: opacity 1s ease-out;
+        overflow: hidden;
+      }
+      
+      /* Effet de scan lines */
+      #titleScreen::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(0, 0, 0, 0.2) 2px,
+          rgba(0, 0, 0, 0.2) 4px
+        );
+        pointer-events: none;
+        z-index: 1;
+      }
+      
+      /* Effet de vignette */
+      #titleScreen::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.8) 100%);
+        pointer-events: none;
+        z-index: 1;
+      }
+      
+      #titleScreen.hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+      
+      .title-container {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      #titleScreen .main-title {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: clamp(0.5rem, 2vw, 1.5rem);
+        margin-bottom: 1rem;
+      }
+      
+      #titleScreen .brand {
+        color: #ffffff;
+        font-size: clamp(1.5rem, 5vw, 3.5rem);
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        animation: subtleGlow 3s ease-in-out infinite alternate;
+      }
+      
+      #titleScreen .x-separator {
+        color: rgba(255, 255, 255, 0.4);
+        font-size: clamp(1rem, 3vw, 2rem);
+        font-weight: 300;
+        font-family: 'Rajdhani', sans-serif;
+      }
+      
+      #titleScreen .subtitle {
+        color: #ffffff;
+        font-size: clamp(1.5rem, 5vw, 3.5rem);
+        font-weight: 700;
+        letter-spacing: 0.15em;
+        text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        animation: subtleGlow 3s ease-in-out infinite alternate;
+      }
+      
+      #titleScreen .collab-name {
+        color: rgba(255, 255, 255, 0.5);
+        font-size: clamp(0.9rem, 2.5vw, 1.4rem);
+        font-weight: 400;
+        letter-spacing: 0.5em;
+        margin-bottom: 3rem;
+        font-family: 'Rajdhani', sans-serif;
+      }
+      
+      #titleScreen .start-text {
+        color: rgba(255, 255, 255, 0.7);
+        font-size: clamp(0.7rem, 1.5vw, 0.9rem);
+        font-family: 'Rajdhani', sans-serif;
+        font-weight: 400;
+        letter-spacing: 0.3em;
+        padding: 12px 30px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        background: transparent;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        animation: borderPulse 3s ease-in-out infinite;
+      }
+      
+      #titleScreen .start-text::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+        animation: scanLine 3s linear infinite;
+      }
+      
+      #titleScreen .start-text:hover {
+        background: rgba(255, 255, 255, 0.05);
+        border-color: rgba(255, 255, 255, 0.5);
+        color: #ffffff;
+        transform: scale(1.02);
+      }
+      
+      /* Particules flottantes */
+      .particle {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        background: rgba(255, 255, 255, 0.5);
+        border-radius: 50%;
+        opacity: 0.4;
+        animation: float 15s linear infinite;
+        z-index: 0;
+      }
+      
+      @keyframes subtleGlow {
+        from { 
+          text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+          opacity: 0.95;
+        }
+        to { 
+          text-shadow: 0 0 25px rgba(255, 255, 255, 0.4);
+          opacity: 1;
+        }
+      }
+      
+      @keyframes borderPulse {
+        0%, 100% { border-color: rgba(255, 255, 255, 0.15); }
+        50% { border-color: rgba(255, 255, 255, 0.35); }
+      }
+      
+      @keyframes scanLine {
+        0% { left: -100%; }
+        100% { left: 100%; }
+      }
+      
+      @keyframes float {
+        0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+        10% { opacity: 0.4; }
+        90% { opacity: 0.4; }
+        100% { transform: translateY(-100vh) translateX(30px); opacity: 0; }
+      }
+    </style>
   </head>
 
   <body>
+    <!-- ÉCRAN TITRE CYBERPUNK -->
+    <div id="titleScreen">
+      <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+      <div class="particle" style="left: 20%; animation-delay: 2s;"></div>
+      <div class="particle" style="left: 30%; animation-delay: 4s;"></div>
+      <div class="particle" style="left: 40%; animation-delay: 1s;"></div>
+      <div class="particle" style="left: 50%; animation-delay: 3s;"></div>
+      <div class="particle" style="left: 60%; animation-delay: 5s;"></div>
+      <div class="particle" style="left: 70%; animation-delay: 2.5s;"></div>
+      <div class="particle" style="left: 80%; animation-delay: 4.5s;"></div>
+      <div class="particle" style="left: 90%; animation-delay: 1.5s;"></div>
+      
+      <div class="title-container">
+        <div class="main-title">
+          <div class="brand">YSL</div>
+          <div class="x-separator">✕</div>
+          <div class="subtitle">BLADE RUNNER 2049</div>
+        </div>
+        <div class="collab-name">— EDEN 2049 —</div>
+        <div class="start-text">[ CLIQUER POUR ENTRER ]</div>
+      </div>
+    </div>
     <a-scene id="scene" fog="type: linear; color: #111; near: 6; far: 14" background="color: #111">
       <a-light type="ambient" color="#ffffff" intensity="0.05"> </a-light>
 
@@ -21,6 +232,11 @@
         <img id="ceilingTex" src="textures/white_wall.jpg" />
         <img id="foret360" src="assets/forest.jpg" />
         <img id="forestBg" src="textures/bg_forest.jpg" />
+        
+        <!-- AUDIO -->
+        <audio id="ambianceAudio" src="audio/ambiance.mp3" preload="auto"></audio>
+        <audio id="forestAudio" src="audio/forest.mp3" preload="auto"></audio>
+        <audio id="clicAudio" src="audio/clic.mp3" preload="auto"></audio>
         
         <a-asset-item
           id="terminal"
@@ -203,6 +419,37 @@
           height="1"
           material="opacity: 0; transparent: true"
         ></a-cylinder>
+        <!-- Son de clic -->
+        <a-entity
+          id="clicSound"
+          sound="src: #clicAudio; autoplay: false; volume: 0.5"
+        ></a-entity>
+        <!-- HOLOGRAMME (caché au départ) -->
+        <a-entity id="hologram" visible="false" position="0 1.6 0">
+          <a-plane
+            id="holoScreen"
+            width="1.2"
+            height="0.8"
+            material="color: #ff0000; opacity: 0.4; transparent: true; side: double; emissive: #ff0000; emissiveIntensity: 0.5"
+            position="0 0 0"
+          ></a-plane>
+          <!-- Bordure lumineuse -->
+          <a-plane
+            width="1.25"
+            height="0.85"
+            material="color: #ff0000; opacity: 0.8; transparent: true; wireframe: true; emissive: #ff0000; emissiveIntensity: 1"
+            position="0 0 -0.01"
+          ></a-plane>
+          <!-- Effet de scan -->
+          <a-plane
+            id="holoScanline"
+            width="1.2"
+            height="0.02"
+            material="color: #ffffff; opacity: 0.6; transparent: true; emissive: #ffffff; emissiveIntensity: 2"
+            position="0 0.35 0.01"
+            animation="property: position; from: 0 0.35 0.01; to: 0 -0.35 0.01; dur: 1500; loop: true; easing: linear"
+          ></a-plane>
+        </a-entity>
       </a-entity>
 
       <!-- FORÊT CIRCULAIRE (cachée au départ) -->
@@ -305,6 +552,34 @@
         <a-entity gltf-model="#treeModel" position="11.3 0 -11.3" scale="0.01 0.0117 0.01" rotation="0 233 0"></a-entity>
         <a-entity gltf-model="#treeModel" position="13.9 0 -8" scale="0.0125 0.0158 0.0125" rotation="0 300 0"></a-entity>
         
+        <!-- PARTICULES FLOTTANTES (pollen/lucioles) -->
+        <a-entity id="forestParticles">
+          <!-- Particules blanches/dorées flottantes -->
+          <a-sphere position="2 1.5 3" radius="0.03" material="color: #ffffcc; emissive: #ffffcc; emissiveIntensity: 0.8; opacity: 0.7; transparent: true"
+            animation="property: position; to: 2.5 2 3.5; dur: 4000; easing: easeInOutSine; loop: true; dir: alternate"></a-sphere>
+          <a-sphere position="-3 2 5" radius="0.025" material="color: #ffffff; emissive: #ffffff; emissiveIntensity: 0.6; opacity: 0.6; transparent: true"
+            animation="property: position; to: -2.5 2.5 4.5; dur: 5000; easing: easeInOutSine; loop: true; dir: alternate"></a-sphere>
+          <a-sphere position="4 1 -2" radius="0.035" material="color: #ffffaa; emissive: #ffffaa; emissiveIntensity: 0.7; opacity: 0.8; transparent: true"
+            animation="property: position; to: 4.5 1.8 -1.5; dur: 3500; easing: easeInOutSine; loop: true; dir: alternate"></a-sphere>
+          <a-sphere position="-5 2.5 -4" radius="0.02" material="color: #ffffff; emissive: #ffffff; emissiveIntensity: 0.5; opacity: 0.5; transparent: true"
+            animation="property: position; to: -4.5 3 -3.5; dur: 6000; easing: easeInOutSine; loop: true; dir: alternate"></a-sphere>
+          <a-sphere position="1 3 7" radius="0.03" material="color: #ffffdd; emissive: #ffffdd; emissiveIntensity: 0.6; opacity: 0.6; transparent: true"
+            animation="property: position; to: 0.5 3.5 6.5; dur: 4500; easing: easeInOutSine; loop: true; dir: alternate"></a-sphere>
+          <a-sphere position="-2 1.2 -6" radius="0.025" material="color: #ffffff; emissive: #ffffff; emissiveIntensity: 0.7; opacity: 0.7; transparent: true"
+            animation="property: position; to: -1.5 1.8 -5.5; dur: 5500; easing: easeInOutSine; loop: true; dir: alternate"></a-sphere>
+          <a-sphere position="6 2 1" radius="0.02" material="color: #ffffcc; emissive: #ffffcc; emissiveIntensity: 0.5; opacity: 0.5; transparent: true"
+            animation="property: position; to: 5.5 2.8 1.5; dur: 4200; easing: easeInOutSine; loop: true; dir: alternate"></a-sphere>
+          <a-sphere position="-4 1.8 2" radius="0.035" material="color: #ffffaa; emissive: #ffffaa; emissiveIntensity: 0.8; opacity: 0.8; transparent: true"
+            animation="property: position; to: -3.5 2.3 2.5; dur: 3800; easing: easeInOutSine; loop: true; dir: alternate"></a-sphere>
+          <a-sphere position="0 2.2 -3" radius="0.025" material="color: #ffffff; emissive: #ffffff; emissiveIntensity: 0.6; opacity: 0.6; transparent: true"
+            animation="property: position; to: 0.5 2.7 -2.5; dur: 5200; easing: easeInOutSine; loop: true; dir: alternate"></a-sphere>
+          <a-sphere position="3 1.5 -5" radius="0.03" material="color: #ffffdd; emissive: #ffffdd; emissiveIntensity: 0.7; opacity: 0.7; transparent: true"
+            animation="property: position; to: 3.5 2 -4.5; dur: 4800; easing: easeInOutSine; loop: true; dir: alternate"></a-sphere>
+          <a-sphere position="-1 2.8 4" radius="0.02" material="color: #ffffff; emissive: #ffffff; emissiveIntensity: 0.5; opacity: 0.5; transparent: true"
+            animation="property: position; to: -0.5 3.3 3.5; dur: 6500; easing: easeInOutSine; loop: true; dir: alternate"></a-sphere>
+          <a-sphere position="5 1.2 4" radius="0.025" material="color: #ffffcc; emissive: #ffffcc; emissiveIntensity: 0.6; opacity: 0.6; transparent: true"
+            animation="property: position; to: 4.5 1.7 4.5; dur: 4100; easing: easeInOutSine; loop: true; dir: alternate"></a-sphere>
+        </a-entity>
        
       </a-entity>
 
@@ -340,6 +615,56 @@
           raycaster="objects: .clickable; far: 20; lineColor: red; lineOpacity: 0"
         ></a-entity>
       </a-entity>
+
+      <!-- AUDIO AMBIANCE 3D (en boucle) -->
+      <a-entity
+        id="ambianceSound"
+        sound="src: #ambianceAudio; autoplay: false; loop: true; volume: 0.15; positional: false"
+        position="0 1.6 0"
+      ></a-entity>
+      
+      <!-- AUDIO FORÊT (en boucle, démarre après transformation) -->
+      <a-entity
+        id="forestSound"
+        sound="src: #forestAudio; autoplay: false; loop: true; volume: 0.4; positional: false"
+        position="0 1.6 0"
+      ></a-entity>
     </a-scene>
+
+    <!-- SCRIPT ÉCRAN TITRE -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const titleScreen = document.getElementById('titleScreen');
+        const scene = document.querySelector('a-scene');
+        const ambianceSound = document.getElementById('ambianceSound');
+        
+        // Fonction pour démarrer l'expérience
+        const startExperience = () => {
+          // Jouer la musique
+          if (ambianceSound) {
+            ambianceSound.components.sound.playSound();
+            console.log('Musique d\'ambiance lancée!');
+          }
+          
+          // Masquer l'écran titre avec animation
+          titleScreen.classList.add('hidden');
+          
+          // Supprimer complètement après l'animation
+          setTimeout(() => {
+            titleScreen.style.display = 'none';
+          }, 800);
+        };
+        
+        // Écouter le clic sur l'écran titre (Desktop)
+        titleScreen.addEventListener('click', startExperience);
+        
+        // Support VR: démarrer quand on entre en VR
+        scene.addEventListener('enter-vr', () => {
+          if (!titleScreen.classList.contains('hidden')) {
+            startExperience();
+          }
+        });
+      });
+    </script>
   </body>
 </html>
