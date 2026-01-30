@@ -2,19 +2,23 @@ AFRAME.registerComponent('terminal-interaction', {
     init: function() {
         console.log('Component terminal-interaction initialisé sur:', this.el);
         
-        let isActivated = false; // Empêcher les clics multiples
+        let isTransitioning = false; // Empêcher les clics pendant la transition
+        let isInForest = false; // État actuel de la scène
         
         // Fonction pour transformer la scène
         const transformScene = (evt) => {
-            if (isActivated) return; // Ignorer si déjà activé
-            isActivated = true;
+            if (isTransitioning) return; // Ignorer si transition en cours
+            isTransitioning = true;
             
-            console.log('Terminal activé!', evt.type);
+            console.log('Terminal activé!', evt.type, 'État forêt:', isInForest);
             
-            // 1. Jouer le son de clic
             const clicSound = document.querySelector('#clicSound');
             const loadingSound = document.querySelector('#loadingSound');
+            const hologram = document.querySelector('#hologram');
+            const holoScreen = document.querySelector('#holoScreen');
+            const holoBorder = holoScreen ? holoScreen.parentElement.children[2] : null;
             
+            // Jouer le son de clic
             if (clicSound && clicSound.components.sound) {
                 clicSound.components.sound.playSound();
                 console.log('Son de clic joué!');
@@ -26,114 +30,146 @@ AFRAME.registerComponent('terminal-interaction', {
                 console.log('Son de loading joué!');
             }
             
-            // 2. Afficher l'hologramme rouge
-            const hologram = document.querySelector('#hologram');
-            const holoScreen = document.querySelector('#holoScreen');
-            const holoScanline = document.querySelector('#holoScanline');
+            if (!isInForest) {
+                // === TRANSITION LABO → FORÊT ===
+                // Afficher l'hologramme ROUGE
+                if (hologram) {
+                    holoScreen.setAttribute('material', 'color: #ff0000; opacity: 0.4; transparent: true; side: double; emissive: #ff0000; emissiveIntensity: 0.5');
+                    if (holoBorder) holoBorder.setAttribute('material', 'color: #ff0000; opacity: 0.8; transparent: true; wireframe: true; emissive: #ff0000; emissiveIntensity: 1');
+                    hologram.setAttribute('visible', 'true');
+                    console.log('Hologramme rouge affiché!');
+                }
+                
+                // Après 2 secondes, passer au BLEU
+                setTimeout(() => {
+                    if (clicSound && clicSound.components.sound) {
+                        clicSound.components.sound.playSound();
+                    }
+                    
+                    if (holoScreen) {
+                        holoScreen.setAttribute('material', 'color: #00aaff; opacity: 0.4; transparent: true; side: double; emissive: #00aaff; emissiveIntensity: 0.5');
+                        if (holoBorder) holoBorder.setAttribute('material', 'color: #00aaff; opacity: 0.8; transparent: true; wireframe: true; emissive: #00aaff; emissiveIntensity: 1');
+                        console.log('Hologramme bleu!');
+                    }
+                    
+                    // Transformer vers la forêt
+                    setTimeout(() => {
+                        if (hologram) hologram.setAttribute('visible', 'false');
+                        goToForest();
+                        isInForest = true;
+                        isTransitioning = false;
+                        console.log('Transformation vers forêt complète!');
+                    }, 500);
+                    
+                }, 2000);
+                
+            } else {
+                // === TRANSITION FORÊT → LABO ===
+                // Afficher l'hologramme BLEU
+                if (hologram) {
+                    holoScreen.setAttribute('material', 'color: #00aaff; opacity: 0.4; transparent: true; side: double; emissive: #00aaff; emissiveIntensity: 0.5');
+                    if (holoBorder) holoBorder.setAttribute('material', 'color: #00aaff; opacity: 0.8; transparent: true; wireframe: true; emissive: #00aaff; emissiveIntensity: 1');
+                    hologram.setAttribute('visible', 'true');
+                    console.log('Hologramme bleu affiché!');
+                }
+                
+                // Après 2 secondes, passer au ROUGE
+                setTimeout(() => {
+                    if (clicSound && clicSound.components.sound) {
+                        clicSound.components.sound.playSound();
+                    }
+                    
+                    if (holoScreen) {
+                        holoScreen.setAttribute('material', 'color: #ff0000; opacity: 0.4; transparent: true; side: double; emissive: #ff0000; emissiveIntensity: 0.5');
+                        if (holoBorder) holoBorder.setAttribute('material', 'color: #ff0000; opacity: 0.8; transparent: true; wireframe: true; emissive: #ff0000; emissiveIntensity: 1');
+                        console.log('Hologramme rouge!');
+                    }
+                    
+                    // Transformer vers le labo
+                    setTimeout(() => {
+                        if (hologram) hologram.setAttribute('visible', 'false');
+                        goToLab();
+                        isInForest = false;
+                        isTransitioning = false;
+                        console.log('Transformation vers labo complète!');
+                    }, 500);
+                    
+                }, 2000);
+            }
+        };
+        
+        // Fonction pour aller vers la forêt
+        const goToForest = () => {
+            const ambianceSound = document.querySelector('#ambianceSound');
+            const forestSound = document.querySelector('#forestSound');
+            const woodpeckerSound = document.querySelector('#woodpeckerSound');
+            const grass = document.querySelector('#grass');
+            const wall = document.querySelector('#wall');
+            const ceiling = document.querySelector('#ceiling');
+            const forest = document.querySelector('#forest');
+            const forestWall = document.querySelector('#forestWall');
+            const scene = document.querySelector('#scene');
+            const ambientLight = document.querySelector('#ambientLight');
             
-            if (hologram) {
-                hologram.setAttribute('visible', 'true');
-                console.log('Hologramme rouge affiché!');
+            // Changer l'audio
+            if (ambianceSound && ambianceSound.components.sound) {
+                ambianceSound.components.sound.stopSound();
+            }
+            if (forestSound && forestSound.components.sound) {
+                forestSound.components.sound.playSound();
+            }
+            if (woodpeckerSound && woodpeckerSound.components.sound) {
+                woodpeckerSound.components.sound.playSound();
             }
             
-            // 3. Après 2 secondes, passer au bleu
-            setTimeout(() => {
-                // Jouer le son de clic pour le passage au bleu
-                if (clicSound && clicSound.components.sound) {
-                    clicSound.components.sound.playSound();
-                    console.log('Son de clic (passage bleu)!');
-                }
-                
-                if (holoScreen) {
-                    holoScreen.setAttribute('material', 'color: #00aaff; opacity: 0.4; transparent: true; side: double; emissive: #00aaff; emissiveIntensity: 0.5');
-                    holoScreen.parentElement.children[1].setAttribute('material', 'color: #00aaff; opacity: 0.8; transparent: true; wireframe: true; emissive: #00aaff; emissiveIntensity: 1');
-                    console.log('Hologramme bleu!');
-                }
-                
-                // 4. Après le passage au bleu, transformer la scène
-                setTimeout(() => {
-                    // Cacher l'hologramme
-                    if (hologram) {
-                        hologram.setAttribute('visible', 'false');
-                    }
-                    
-                    // Changer l'audio : arrêter ambiance, démarrer forêt
-                    const ambianceSound = document.querySelector('#ambianceSound');
-                    const forestSound = document.querySelector('#forestSound');
-                    
-                    if (ambianceSound && ambianceSound.components.sound) {
-                        ambianceSound.components.sound.stopSound();
-                        console.log('Ambiance arrêtée');
-                    }
-                    
-                    if (forestSound && forestSound.components.sound) {
-                        forestSound.components.sound.playSound();
-                        console.log('Son forêt lancé!');
-                    }
-                    
-                    // Transformation visuelle de la scène
-                    const grass = document.querySelector('#grass');
-                    const wall = document.querySelector('#wall');
-                    const ceiling = document.querySelector('#ceiling');
-                    const forest = document.querySelector('#forest');
-                    const forestWall = document.querySelector('#forestWall');
-                    const scene = document.querySelector('#scene');
-                    const ambientLight = document.querySelector('#ambientLight');
-                    
-                    // Faire apparaître la plante centrale
-                    if (grass) {
-                        grass.setAttribute('scale', '1 1 1');
-                        console.log('Plante centrale visible!');
-                    }
-                    
-                    // Faire disparaître le mur
-                    if (wall) {
-                        wall.setAttribute('visible', 'false');
-                        console.log('Mur caché!');
-                    }
-                    
-                    // Faire disparaître le plafond
-                    if (ceiling) {
-                        ceiling.setAttribute('visible', 'false');
-                        console.log('Plafond caché!');
-                    }
-                    
-                    // Faire apparaître la forêt
-                    if (forest) {
-                        forest.setAttribute('visible', 'true');
-                        console.log('Forêt visible!');
-                        
-                        // Démarrer le son du pic-bois
-                        const woodpeckerSound = document.querySelector('#woodpeckerSound');
-                        if (woodpeckerSound && woodpeckerSound.components.sound) {
-                            woodpeckerSound.components.sound.playSound();
-                            console.log('Son pic-bois lancé!');
-                        }
-                    }
-                    
-                    // Faire apparaître le mur panoramique de forêt
-                    if (forestWall) {
-                        forestWall.setAttribute('visible', 'true');
-                        console.log('Mur panoramique forêt visible!');
-                    }
-                    
-                    // Changer le ciel en bleu et ajuster le fog
-                    if (scene) {
-                        scene.setAttribute('background', 'color: #87CEEB');
-                        scene.setAttribute('fog', 'type: linear; color: #87CEEB; near: 15; far: 50');
-                        console.log('Ciel bleu!');
-                    }
-                    
-                    // Augmenter la luminosité ambiante
-                    if (ambientLight) {
-                        ambientLight.setAttribute('intensity', '0.8');
-                        console.log('Luminosité augmentée!');
-                    }
-                    
-                    console.log('Transformation complète!');
-                }, 500); // Petit délai après le bleu
-                
-            }, 2000); // 2 secondes avant de passer au bleu
+            // Transformation visuelle
+            if (grass) grass.setAttribute('scale', '1 1 1');
+            if (wall) wall.setAttribute('visible', 'false');
+            if (ceiling) ceiling.setAttribute('visible', 'false');
+            if (forest) forest.setAttribute('visible', 'true');
+            if (forestWall) forestWall.setAttribute('visible', 'true');
+            if (scene) {
+                scene.setAttribute('background', 'color: #87CEEB');
+                scene.setAttribute('fog', 'type: linear; color: #87CEEB; near: 15; far: 50');
+            }
+            if (ambientLight) ambientLight.setAttribute('intensity', '0.8');
+        };
+        
+        // Fonction pour retourner au labo
+        const goToLab = () => {
+            const ambianceSound = document.querySelector('#ambianceSound');
+            const forestSound = document.querySelector('#forestSound');
+            const woodpeckerSound = document.querySelector('#woodpeckerSound');
+            const grass = document.querySelector('#grass');
+            const wall = document.querySelector('#wall');
+            const ceiling = document.querySelector('#ceiling');
+            const forest = document.querySelector('#forest');
+            const forestWall = document.querySelector('#forestWall');
+            const scene = document.querySelector('#scene');
+            const ambientLight = document.querySelector('#ambientLight');
+            
+            // Changer l'audio
+            if (forestSound && forestSound.components.sound) {
+                forestSound.components.sound.stopSound();
+            }
+            if (woodpeckerSound && woodpeckerSound.components.sound) {
+                woodpeckerSound.components.sound.stopSound();
+            }
+            if (ambianceSound && ambianceSound.components.sound) {
+                ambianceSound.components.sound.playSound();
+            }
+            
+            // Transformation visuelle inverse
+            if (grass) grass.setAttribute('scale', '0 0 0');
+            if (wall) wall.setAttribute('visible', 'true');
+            if (ceiling) ceiling.setAttribute('visible', 'true');
+            if (forest) forest.setAttribute('visible', 'false');
+            if (forestWall) forestWall.setAttribute('visible', 'false');
+            if (scene) {
+                scene.setAttribute('background', 'color: #111');
+                scene.setAttribute('fog', 'type: linear; color: #111; near: 6; far: 14');
+            }
+            if (ambientLight) ambientLight.setAttribute('intensity', '0.05');
         };
         
         // Desktop: clic avec la souris via le cursor
