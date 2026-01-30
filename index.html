@@ -237,6 +237,7 @@
         <audio id="ambianceAudio" src="audio/ambiance.mp3" preload="auto"></audio>
         <audio id="forestAudio" src="audio/forest.mp3" preload="auto"></audio>
         <audio id="clicAudio" src="audio/clic.mp3" preload="auto"></audio>
+        <audio id="woodpeckerAudio" src="audio/woodpecker.mp3" preload="auto"></audio>
         
         <a-asset-item
           id="terminal"
@@ -422,7 +423,7 @@
         <!-- Son de clic -->
         <a-entity
           id="clicSound"
-          sound="src: #clicAudio; autoplay: false; volume: 0.5"
+          sound="src: #clicAudio; autoplay: false; volume: 1.0"
         ></a-entity>
         <!-- HOLOGRAMME (caché au départ) -->
         <a-entity id="hologram" visible="false" position="0 1.6 0">
@@ -519,7 +520,14 @@
         <!-- ARBRES (tree.glb) - Cercle extérieur rayon 12 -->
         <a-entity gltf-model="#treeModel" position="12 0 0" scale="0.0083 0.01 0.0083" rotation="0 45 0"></a-entity>
         <a-entity gltf-model="#treeModel" position="10.4 0 6" scale="0.0092 0.0108 0.0092" rotation="0 90 0"></a-entity>
-        <a-entity gltf-model="#treeModel" position="8.5 0 8.5" scale="0.0075 0.0092 0.0075" rotation="0 135 0"></a-entity>
+        <!-- Arbre avec pic-bois -->
+        <a-entity gltf-model="#treeModel" position="8.5 0 8.5" scale="0.0075 0.0092 0.0075" rotation="0 135 0">
+          <a-entity
+            id="woodpeckerSound"
+            position="0 300 0"
+            sound="src: #woodpeckerAudio; autoplay: false; loop: true; volume: 0.1; positional: true; refDistance: 2; maxDistance: 15; rolloffFactor: 1"
+          ></a-entity>
+        </a-entity>
         <a-entity gltf-model="#treeModel" position="6 0 10.4" scale="0.01 0.0117 0.01" rotation="0 180 0"></a-entity>
         <a-entity gltf-model="#treeModel" position="0 0 12" scale="0.0083 0.01 0.0083" rotation="0 225 0"></a-entity>
         <a-entity gltf-model="#treeModel" position="-6 0 10.4" scale="0.0092 0.0108 0.0092" rotation="0 270 0"></a-entity>
@@ -619,14 +627,14 @@
       <!-- AUDIO AMBIANCE 3D (en boucle) -->
       <a-entity
         id="ambianceSound"
-        sound="src: #ambianceAudio; autoplay: false; loop: true; volume: 0.15; positional: false"
+        sound="src: #ambianceAudio; autoplay: false; loop: true; volume: 0.1; positional: false"
         position="0 1.6 0"
       ></a-entity>
       
       <!-- AUDIO FORÊT (en boucle, démarre après transformation) -->
       <a-entity
         id="forestSound"
-        sound="src: #forestAudio; autoplay: false; loop: true; volume: 0.4; positional: false"
+        sound="src: #forestAudio; autoplay: false; loop: true; volume: 0.8; positional: false"
         position="0 1.6 0"
       ></a-entity>
     </a-scene>

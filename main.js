@@ -94,6 +94,13 @@ AFRAME.registerComponent('terminal-interaction', {
                     if (forest) {
                         forest.setAttribute('visible', 'true');
                         console.log('Forêt visible!');
+                        
+                        // Démarrer le son du pic-bois
+                        const woodpeckerSound = document.querySelector('#woodpeckerSound');
+                        if (woodpeckerSound && woodpeckerSound.components.sound) {
+                            woodpeckerSound.components.sound.playSound();
+                            console.log('Son pic-bois lancé!');
+                        }
                     }
                     
                     // Faire apparaître le mur panoramique de forêt
